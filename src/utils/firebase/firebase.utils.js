@@ -8,15 +8,25 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
+
 // It's ok to expose this api key
 const firebaseConfig = {
-  apiKey: "AIzaSyDZjknjbjF3ovBG2v6v9RbhCDP5LDPsHSo",
-  authDomain: "royaltea-d529d.firebaseapp.com",
-  projectId: "royaltea-d529d",
-  storageBucket: "royaltea-d529d.firebasestorage.app",
-  messagingSenderId: "542739529972",
-  appId: "1:542739529972:web:ceeea8b928eed31df69ea1",
+  apiKey: "AIzaSyBEKGDtqkcOEx-6Eeboxj3XZgDXf3_vi-k",
+  authDomain: "crwn-e-com.firebaseapp.com",
+  projectId: "crwn-e-com",
+  storageBucket: "crwn-e-com.firebasestorage.app",
+  messagingSenderId: "713109022632",
+  appId: "1:713109022632:web:2205c1fe5191c8cada1f9d",
 };
 
 // Initialize Firebase
@@ -31,6 +41,36 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd,
+  field = "title"
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object[field].toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
