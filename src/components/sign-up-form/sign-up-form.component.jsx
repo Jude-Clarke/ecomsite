@@ -6,7 +6,11 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
-import { SignUpContainer, Title } from "./sign-up-form.styles";
+import {
+  SignUpContainer,
+  Title,
+  ButtonsContainer,
+} from "./sign-up-form.styles";
 
 const defaultFormFields = {
   displayName: "",
@@ -92,14 +96,16 @@ const SignUpForm = () => {
           onChange={handleChange}
           name="confirmPassword"
         />
-        <Button type="submit">Sign Up</Button>
-        <Button
-          type="button"
-          buttonType={BUTTON_TYPE_CLASSES.google}
-          onClick={signInWithGoogle}
-        >
-          Sign in with Google
-        </Button>
+        <ButtonsContainer>
+          <Button type="submit">Sign Up</Button>
+          <Button
+            type="button"
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            onClick={signInWithGoogle}
+          >
+            Google Sign In
+          </Button>
+        </ButtonsContainer>
       </form>
     </SignUpContainer>
   );
