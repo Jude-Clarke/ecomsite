@@ -5,8 +5,8 @@ import {
   signInWithGooglePopup,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
-import "./sign-up-form.styles.css";
-import Button from "../button/button.component";
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+import { SignUpContainer, Title } from "./sign-up-form.styles";
 
 const defaultFormFields = {
   displayName: "",
@@ -56,8 +56,8 @@ const SignUpForm = () => {
     setFormFields({ ...formFields, [name]: value });
   };
   return (
-    <div className="sign-up-container">
-      <h2>Don't have an account?</h2>
+    <SignUpContainer>
+      <Title>Don't have an account?</Title>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
@@ -93,11 +93,15 @@ const SignUpForm = () => {
           name="confirmPassword"
         />
         <Button type="submit">Sign Up</Button>
-        <Button type="button" buttonType={"google"} onClick={signInWithGoogle}>
+        <Button
+          type="button"
+          buttonType={BUTTON_TYPE_CLASSES.google}
+          onClick={signInWithGoogle}
+        >
           Sign in with Google
         </Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 
